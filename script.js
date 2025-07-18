@@ -1,16 +1,16 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     // Smooth scrolling for navigation links
     initSmoothScrolling();
-    
+
     // Initialize navbar effects
     initNavbarEffects();
-    
+
     // Initialize stats animation
     initStatsAnimation();
-    
+
     // Initialize mobile menu
     initMobileMenu();
-    
+
     // Initialize lazy loading for images
     initLazyLoading();
 });
@@ -34,8 +34,8 @@ function initSmoothScrolling() {
 // Navbar scroll effects
 function initNavbarEffects() {
     const navbar = document.querySelector('.navbar');
-    
-    window.addEventListener('scroll', function() {
+
+    window.addEventListener('scroll', function () {
         if (window.scrollY > 50) {
             navbar.style.background = 'rgba(255, 255, 255, 0.98)';
             navbar.style.boxShadow = '0 2px 30px rgba(0,0,0,0.15)';
@@ -49,9 +49,9 @@ function initNavbarEffects() {
 // Animated statistics counter
 function initStatsAnimation() {
     const statNumbers = document.querySelectorAll('.stat-item .number');
-    
+
     if (statNumbers.length === 0) return;
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -62,7 +62,7 @@ function initStatsAnimation() {
     }, {
         threshold: 0.5
     });
-    
+
     statNumbers.forEach(stat => observer.observe(stat));
 }
 
@@ -70,14 +70,14 @@ function animateNumber(element) {
     const finalText = element.textContent;
     const numericValue = parseInt(finalText.replace(/\D/g, ''));
     const suffix = finalText.replace(/\d/g, '');
-    
+
     if (isNaN(numericValue)) return;
-    
+
     let current = 0;
     const increment = numericValue / 50;
     const duration = 2000; // 2 seconds
     const stepTime = duration / 50;
-    
+
     const timer = setInterval(() => {
         current += increment;
         if (current >= numericValue) {
@@ -93,16 +93,16 @@ function animateNumber(element) {
 function initMobileMenu() {
     const hamburger = document.querySelector('.hamburger');
     const mobileMenu = document.querySelector('.mobile-menu');
-    
+
     if (!hamburger || !mobileMenu) return;
-    
-    hamburger.addEventListener('click', function() {
+
+    hamburger.addEventListener('click', function () {
         mobileMenu.style.display = mobileMenu.style.display === 'block' ? 'none' : 'block';
         hamburger.classList.toggle('active');
     });
-    
+
     // Close menu when clicking outside
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (!hamburger.contains(e.target) && !mobileMenu.contains(e.target)) {
             mobileMenu.style.display = 'none';
             hamburger.classList.remove('active');
@@ -113,7 +113,7 @@ function initMobileMenu() {
 // Lazy loading for images
 function initLazyLoading() {
     const images = document.querySelectorAll('img[loading="lazy"]');
-    
+
     if ('IntersectionObserver' in window) {
         const imageObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach(entry => {
@@ -124,7 +124,7 @@ function initLazyLoading() {
                 }
             });
         });
-        
+
         images.forEach(img => imageObserver.observe(img));
     }
 }
@@ -132,7 +132,7 @@ function initLazyLoading() {
 // Add fade-in animation for elements
 function initFadeInAnimation() {
     const elements = document.querySelectorAll('.team-member, .gallery-item');
-    
+
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
@@ -144,7 +144,7 @@ function initFadeInAnimation() {
     }, {
         threshold: 0.1
     });
-    
+
     elements.forEach(element => {
         element.style.opacity = '0';
         element.style.transform = 'translateY(50px)';
@@ -154,6 +154,6 @@ function initFadeInAnimation() {
 }
 
 // Initialize all animations after page load
-window.addEventListener('load', function() {
+window.addEventListener('load', function () {
     initFadeInAnimation();
 });
