@@ -37,9 +37,11 @@ katanya-setara/
 ├── script.js           # JavaScript interaktif
 ├── package.json        # Konfigurasi project
 ├── vercel.json         # Konfigurasi deploy Vercel
+├── build.js            # Build script untuk Vercel
 ├── README.md          # Dokumentasi ini
 ├── .gitignore         # File yang diabaikan git
 ├── _headers           # Header HTTP untuk Vercel
+├── public/            # Output directory (auto-generated)
 └── assets/
     ├── logo.svg       # Logo organisasi (SVG)
     └── logo.png       # Logo organisasi (PNG)
@@ -48,11 +50,15 @@ katanya-setara/
 ## Instalasi & Menjalankan
 
 1. **Clone atau download repository ini**
-2. **Jalankan local server:**
+2. **Build website:**
+   ```bash
+   node build.js
+   ```
+3. **Jalankan local server:**
    ```bash
    python -m http.server 8000
    ```
-   Atau buka langsung `index.html` di browser
+   Atau buka langsung `public/index.html` di browser
 
 ## Deploy ke Vercel
 
@@ -65,13 +71,14 @@ katanya-setara/
    - Klik "New Project"
    - Import repository dari GitHub
    - **Framework Preset**: Other
-   - **Build Command**: `echo 'Static files ready'`
-   - **Output Directory**: `.` (titik untuk root)
+   - **Build Command**: `npm run build` (atau `node build.js`)
+   - **Output Directory**: `public`
    - Deploy!
 
 3. **Troubleshooting Deploy:**
-   - Jika error "No Output Directory": pastikan vercel.json kosong `{}`
-   - Jika CSS tidak load: cek path menggunakan `/styles.css` bukan `./styles.css`
+   - Build script `node build.js` akan membuat folder `public/`
+   - Vercel membutuhkan folder `public/` sebagai output directory
+   - Jika error build: pastikan Node.js tersedia di build environment
    - Clear browser cache setelah deploy
 
 4. **Custom Domain (Optional):**
