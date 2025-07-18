@@ -1,0 +1,14 @@
+{
+  "name": "katanya-setara",
+  "version": "1.0.0",
+  "description": "Website profile Katanya Setara - Kampanye edukatif kesetaraan gender",
+  "main": "index.html",
+  "scripts": {
+    "dev": "python -m http.server 3000",
+    "build": "echo 'Build complete - static files ready'",
+    "start": "python -m http.server 8000"
+  },
+  "keywords": ["katanya setara", "gender equality", "education"],
+  "author": "Katanya Setara Team",
+  "license": "MIT"
+}
