@@ -8,6 +8,10 @@
         "build": "node build.js",
         "start": "python -m http.server 8000"
     },
+    "dependencies": {
+        "pg": "^8.11.3",
+        "formidable": "^3.5.1"
+    },
     "keywords": [
         "katanya setara",
         "gender equality",

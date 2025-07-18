@@ -9,7 +9,7 @@ if (fs.existsSync(publicDir)) {
 fs.mkdirSync(publicDir);
 
 // Copy main files
-const filesToCopy = ['index.html', 'styles.css', 'script.js'];
+const filesToCopy = ['index.html', 'styles.css', 'script.js', 'admin.html'];
 filesToCopy.forEach(file => {
     if (fs.existsSync(file)) {
         fs.copyFileSync(file, path.join(publicDir, file));
