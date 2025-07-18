@@ -1,0 +1,19 @@
+/*
+  X-Frame-Options: DENY
+  X-XSS-Protection: 1; mode=block
+  X-Content-Type-Options: nosniff
+
+/*.css
+  Content-Type: text/css
+
+/*.js
+  Content-Type: text/javascript
+
+/*.svg
+  Content-Type: image/svg+xml
+
+/*.png
+  Content-Type: image/png
+
+/*.jpg
+  Content-Type: image/jpeg
