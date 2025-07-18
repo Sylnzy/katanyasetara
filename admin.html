@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -87,7 +88,7 @@
             background: white;
             padding: 40px;
             border-radius: 20px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
             width: 100%;
             max-width: 400px;
         }
@@ -104,7 +105,7 @@
             background: white;
             padding: 30px;
             border-radius: 15px;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
             margin-bottom: 30px;
         }
 
@@ -234,7 +235,7 @@
             background: white;
             border-radius: 15px;
             overflow: hidden;
-            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
         }
 
         .cards-header {
@@ -349,12 +350,12 @@
             .form-grid {
                 grid-template-columns: 1fr;
             }
-            
+
             .admin-nav {
                 flex-direction: column;
                 gap: 15px;
             }
-            
+
             .card-item {
                 grid-template-columns: 1fr;
                 text-align: center;
@@ -374,23 +375,24 @@
         }
     </style>
 </head>
+
 <body>
     <!-- Login Container -->
     <div id="loginContainer" class="login-container">
         <form id="loginForm" class="login-form">
             <h2><i class="fas fa-user-shield"></i> Admin Login</h2>
             <div id="loginMessage"></div>
-            
+
             <div class="form-group">
                 <label for="username">Username</label>
                 <input type="text" id="username" name="username" required>
             </div>
-            
+
             <div class="form-group">
                 <label for="password">Password</label>
                 <input type="password" id="password" name="password" required>
             </div>
-            
+
             <button type="submit" class="btn-primary" style="width: 100%;">
                 <i class="fas fa-sign-in-alt"></i> Login
             </button>
@@ -422,14 +424,14 @@
         <div id="add-content" class="tab-content active">
             <form id="contentForm" class="form-section">
                 <h3><i class="fas fa-plus-circle"></i> Tambah Informasi/Kegiatan Baru</h3>
-                
+
                 <div class="form-grid">
                     <div class="form-group">
                         <label for="title">Judul Kegiatan *</label>
-                        <input type="text" id="title" name="title" required 
-                               placeholder="Contoh: Workshop Kesetaraan Gender">
+                        <input type="text" id="title" name="title" required
+                            placeholder="Contoh: Workshop Kesetaraan Gender">
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="category">Kategori</label>
                         <select id="category" name="category">
@@ -442,13 +444,12 @@
                             <option value="pengumuman">Pengumuman</option>
                         </select>
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="author">Penulis/PIC</label>
-                        <input type="text" id="author" name="author" 
-                               placeholder="Nama penanggung jawab">
+                        <input type="text" id="author" name="author" placeholder="Nama penanggung jawab">
                     </div>
-                    
+
                     <div class="form-group">
                         <label for="status">Status</label>
                         <select id="status" name="status">
@@ -457,26 +458,27 @@
                         </select>
                     </div>
                 </div>
-                
+
                 <div class="form-group full-width">
                     <label for="description">Deskripsi Kegiatan *</label>
-                    <textarea id="description" name="description" required 
-                              placeholder="Tulis deskripsi lengkap kegiatan..."></textarea>
+                    <textarea id="description" name="description" required
+                        placeholder="Tulis deskripsi lengkap kegiatan..."></textarea>
                 </div>
-                
+
                 <div class="form-group full-width">
                     <label>Upload Foto Kegiatan</label>
                     <div class="image-upload" onclick="document.getElementById('imageFile').click()">
                         <input type="file" id="imageFile" accept="image/*" onchange="previewImage(this)">
                         <div id="uploadText">
-                            <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: #d94f70; margin-bottom: 10px;"></i>
+                            <i class="fas fa-cloud-upload-alt"
+                                style="font-size: 2rem; color: #d94f70; margin-bottom: 10px;"></i>
                             <p>Klik untuk upload foto atau drag & drop</p>
                             <small>Format: JPG, PNG, max 5MB</small>
                         </div>
                         <img id="imagePreview" class="image-preview hidden" alt="Preview">
                     </div>
                 </div>
-                
+
                 <button type="submit" class="btn-primary">
                     <i class="fas fa-save"></i> Simpan Kegiatan
                 </button>
@@ -503,7 +505,7 @@
         let currentEditId = null;
 
         // Check login status
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', function () {
             if (authToken) {
                 showDashboard();
             }
@@ -512,14 +514,14 @@
         // Login form handler
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const username = document.getElementById('username').value;
             const password = document.getElementById('password').value;
             const messageDiv = document.getElementById('loginMessage');
 
             try {
                 showMessage('Memproses login...', 'loading', 'loginMessage');
-                
+
                 const response = await fetch('/api/admin/login', {
                     method: 'POST',
                     headers: {
@@ -546,19 +548,19 @@
         // Content form handler
         document.getElementById('contentForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            
+
             const formData = new FormData(e.target);
             const contentData = Object.fromEntries(formData.entries());
-            
+
             // Upload image first if exists
             const imageFile = document.getElementById('imageFile').files[0];
             if (imageFile) {
                 try {
                     showMessage('Mengupload gambar...', 'loading', 'globalMessage');
-                    
+
                     const imageFormData = new FormData();
                     imageFormData.append('image', imageFile);
-                    
+
                     const imageResponse = await fetch('/api/admin/upload', {
                         method: 'POST',
                         headers: {
@@ -566,7 +568,7 @@
                         },
                         body: imageFormData
                     });
-                    
+
                     const imageResult = await imageResponse.json();
                     if (imageResult.success) {
                         contentData.image_url = imageResult.data.image_url;
@@ -578,10 +580,10 @@
 
             try {
                 showMessage('Menyimpan konten...', 'loading', 'globalMessage');
-                
+
                 const method = currentEditId ? 'PUT' : 'POST';
                 const url = currentEditId ? `/api/admin/activities?id=${currentEditId}` : '/api/admin/activities';
-                
+
                 const response = await fetch(url, {
                     method: method,
                     headers: {
@@ -599,7 +601,7 @@
                     resetImagePreview();
                     currentEditId = null;
                     loadCards();
-                    
+
                     // Switch to manage tab
                     setTimeout(() => showTab('manage-content'), 1500);
                 } else {
@@ -631,16 +633,16 @@
             document.querySelectorAll('.tab-content').forEach(tab => {
                 tab.classList.remove('active');
             });
-            
+
             // Remove active class from all buttons
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.classList.remove('active');
             });
-            
+
             // Show selected tab
             document.getElementById(tabName).classList.add('active');
             event.target.classList.add('active');
-            
+
             // Load cards if switching to manage tab
             if (tabName === 'manage-content') {
                 loadCards();
@@ -649,10 +651,10 @@
 
         async function loadCards() {
             const cardsList = document.getElementById('cardsList');
-            
+
             try {
                 cardsList.innerHTML = '<div class="loading"><i class="fas fa-spinner fa-spin"></i> Memuat data...</div>';
-                
+
                 const response = await fetch('/api/admin/activities');
                 const result = await response.json();
 
@@ -668,7 +670,7 @@
 
         function displayCards(cards) {
             const cardsList = document.getElementById('cardsList');
-            
+
             if (cards.length === 0) {
                 cardsList.innerHTML = '<div class="loading">Belum ada konten yang dipublikasikan.</div>';
                 return;
@@ -705,7 +707,7 @@
             try {
                 const response = await fetch('/api/admin/activities');
                 const result = await response.json();
-                
+
                 if (result.success) {
                     const card = result.data.find(c => c.id === id);
                     if (card) {
@@ -715,13 +717,13 @@
                         document.getElementById('category').value = card.category;
                         document.getElementById('author').value = card.author;
                         document.getElementById('status').value = card.status;
-                        
+
                         if (card.image_url) {
                             document.getElementById('imagePreview').src = card.image_url;
                             document.getElementById('imagePreview').classList.remove('hidden');
                             document.getElementById('uploadText').style.display = 'none';
                         }
-                        
+
                         currentEditId = id;
                         showTab('add-content');
                         showMessage('Data dimuat untuk editing', 'success', 'globalMessage');
@@ -737,7 +739,7 @@
 
             try {
                 showMessage('Menghapus konten...', 'loading', 'globalMessage');
-                
+
                 const response = await fetch(`/api/admin/activities?id=${id}`, {
                     method: 'DELETE',
                     headers: {
@@ -762,7 +764,7 @@
             const file = input.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = function (e) {
                     document.getElementById('imagePreview').src = e.target.result;
                     document.getElementById('imagePreview').classList.remove('hidden');
                     document.getElementById('uploadText').style.display = 'none';
@@ -781,13 +783,13 @@
         function showMessage(message, type, containerId) {
             const container = document.getElementById(containerId);
             let className = 'message';
-            
+
             if (type === 'success') className += ' success';
             else if (type === 'error') className += ' error';
             else if (type === 'loading') message = '<i class="fas fa-spinner fa-spin"></i> ' + message;
-            
+
             container.innerHTML = `<div class="${className}">${message}</div>`;
-            
+
             if (type !== 'loading') {
                 setTimeout(() => {
                     container.innerHTML = '';
@@ -796,4 +798,5 @@
         }
     </script>
 </body>
+
 </html>

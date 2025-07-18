@@ -336,6 +336,53 @@ main {
   color: #666;
   font-size: 0.9rem;
   line-height: 1.5;
+  margin-bottom: 10px;
+}
+
+/* Activity Date Styling */
+.activity-date {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #d94f70;
+  font-size: 0.8rem;
+  font-weight: 500;
+  background: rgba(217, 79, 112, 0.1);
+  padding: 4px 10px;
+  border-radius: 12px;
+  margin-top: 8px;
+}
+
+.activity-date i {
+  font-size: 0.75rem;
+}
+
+/* Loading, Error, and Empty States */
+.loading-state, .error-state, .empty-state {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  margin-top: 30px;
+}
+
+.loading-state i.fa-spin {
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.error-state button:hover {
+  background: rgba(217, 79, 112, 0.1) !important;
+  text-decoration: none !important;
+}
+
+.empty-state p, .error-state p, .loading-state p {
+  color: #666;
+  font-size: 1rem;
+  margin: 0;
 }
 
 /* Volunteer Section */
