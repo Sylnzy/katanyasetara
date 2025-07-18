@@ -38,8 +38,11 @@ katanya-setara/
 ├── package.json        # Konfigurasi project
 ├── vercel.json         # Konfigurasi deploy Vercel
 ├── README.md          # Dokumentasi ini
+├── .gitignore         # File yang diabaikan git
+├── _headers           # Header HTTP untuk Vercel
 └── assets/
-    └── logo.png       # Logo organisasi (belum ada)
+    ├── logo.svg       # Logo organisasi (SVG)
+    └── logo.png       # Logo organisasi (PNG)
 ```
 
 ## Instalasi & Menjalankan
@@ -61,10 +64,17 @@ katanya-setara/
    - Daftar di [vercel.com](https://vercel.com) dengan akun GitHub
    - Klik "New Project"
    - Import repository dari GitHub
-   - Vercel akan otomatis detect sebagai static site
+   - **Framework Preset**: Other
+   - **Build Command**: `echo 'Static files ready'`
+   - **Output Directory**: `.` (titik untuk root)
    - Deploy!
 
-3. **Custom Domain (Optional):**
+3. **Troubleshooting Deploy:**
+   - Jika error "No Output Directory": pastikan vercel.json kosong `{}`
+   - Jika CSS tidak load: cek path menggunakan `/styles.css` bukan `./styles.css`
+   - Clear browser cache setelah deploy
+
+4. **Custom Domain (Optional):**
    - Di Vercel dashboard > Settings > Domains
    - Tambahkan domain custom
 

@@ -5,7 +5,7 @@
   "main": "index.html",
   "scripts": {
     "dev": "python -m http.server 3000",
-    "build": "echo 'Build complete - static files ready'",
+    "build": "echo 'Static files ready - no build needed'",
     "start": "python -m http.server 8000"
   },
   "keywords": ["katanya setara", "gender equality", "education"],
