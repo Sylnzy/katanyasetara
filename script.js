@@ -13,6 +13,9 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Initialize lazy loading for images
     initLazyLoading();
+
+    // Load activities from database
+    loadActivities();
 });
 
 // Smooth scrolling functionality
@@ -217,17 +220,19 @@ function displayActivities(activities) {
     
     gridEl.innerHTML = activities.map(activity => `
         <div class="gallery-item">
-            <img src="${activity.image_url || '/assets/default-activity.svg'}" 
+            <img src="${activity.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=250&fit=crop'}" 
                  alt="${escapeHtml(activity.title)}" 
                  loading="lazy"
-                 onerror="this.src='/assets/default-activity.svg'">
+                 onerror="this.src='https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=250&fit=crop'">
             <div class="gallery-item-content">
                 <h3>${escapeHtml(activity.title)}</h3>
-                <p>${escapeHtml(activity.description)}</p>
-                ${activity.date ? `<small class="activity-date">
-                    <i class="fas fa-calendar-alt"></i> 
-                    ${formatDate(activity.date)}
-                </small>` : ''}
+                <p>${escapeHtml(activity.description || 'Deskripsi tidak tersedia')}</p>
+                <div class="activity-meta">
+                    ${activity.category ? `<span class="activity-category"><i class="fas fa-tag"></i> ${escapeHtml(activity.category)}</span>` : ''}
+                    ${activity.author ? `<span class="activity-author"><i class="fas fa-user"></i> ${escapeHtml(activity.author)}</span>` : ''}
+                    ${activity.date ? `<span class="activity-date"><i class="fas fa-calendar-alt"></i> ${formatDate(activity.date)}</span>` : 
+                      activity.created_at ? `<span class="activity-date"><i class="fas fa-calendar-alt"></i> ${formatDate(activity.created_at)}</span>` : ''}
+                </div>
             </div>
         </div>
     `).join('');

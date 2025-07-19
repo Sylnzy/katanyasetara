@@ -340,21 +340,46 @@ main {
 }
 
 /* Activity Date Styling */
+.activity-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #f0f0f0;
+}
+
+.activity-category,
+.activity-author,
 .activity-date {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  color: #d94f70;
-  font-size: 0.8rem;
+  gap: 4px;
+  font-size: 0.75rem;
   font-weight: 500;
-  background: rgba(217, 79, 112, 0.1);
-  padding: 4px 10px;
-  border-radius: 12px;
-  margin-top: 8px;
+  padding: 3px 8px;
+  border-radius: 10px;
 }
 
+.activity-category {
+  background: rgba(108, 117, 125, 0.1);
+  color: #6c757d;
+}
+
+.activity-author {
+  background: rgba(40, 167, 69, 0.1);
+  color: #28a745;
+}
+
+.activity-date {
+  background: rgba(217, 79, 112, 0.1);
+  color: #d94f70;
+}
+
+.activity-category i,
+.activity-author i,
 .activity-date i {
-  font-size: 0.75rem;
+  font-size: 0.7rem;
 }
 
 /* Loading, Error, and Empty States */

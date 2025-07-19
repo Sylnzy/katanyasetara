@@ -82,10 +82,14 @@ export default async function handler(req, res) {
                 title,
                 description,
                 image_url,
+                category,
+                author,
+                status,
                 date,
-                created_at
+                created_at,
+                updated_at
             FROM activities 
-            WHERE status = 'published'
+            WHERE status = 'published' OR status = 'active'
             ORDER BY 
                 CASE WHEN date IS NOT NULL THEN date ELSE created_at END DESC
             LIMIT 20
@@ -100,8 +104,12 @@ export default async function handler(req, res) {
             title: activity.title,
             description: activity.description,
             image_url: activity.image_url,
+            category: activity.category || 'kegiatan',
+            author: activity.author || 'Katanya Setara',
+            status: activity.status,
             date: activity.date,
-            created_at: activity.created_at
+            created_at: activity.created_at,
+            updated_at: activity.updated_at
         }));
 
         res.status(200).json({

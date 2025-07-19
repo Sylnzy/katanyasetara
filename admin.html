@@ -600,10 +600,33 @@
                     e.target.reset();
                     resetImagePreview();
                     currentEditId = null;
-                    loadCards();
-
-                    // Switch to manage tab
-                    setTimeout(() => showTab('manage-content'), 1500);
+                    
+                    // Update button text back to "Tambah"
+                    const submitButton = e.target.querySelector('button[type="submit"]');
+                    submitButton.innerHTML = '<i class="fas fa-plus"></i> Tambah Konten';
+                    
+                    // Reload cards if in manage tab
+                    if (document.getElementById('manage-content').classList.contains('active')) {
+                        loadCards();
+                    }
+                } else {
+                    showMessage(result.message, 'error', 'globalMessage');
+                }
+            } catch (error) {
+                showMessage('Error: ' + error.message, 'error', 'globalMessage');
+            }
+        });
+                    resetImagePreview();
+                    currentEditId = null;
+                    
+                    // Update button text back to "Tambah"
+                    const submitButton = e.target.querySelector('button[type="submit"]');
+                    submitButton.innerHTML = '<i class="fas fa-plus"></i> Tambah Konten';
+                    
+                    // Reload cards if in manage tab
+                    if (document.getElementById('manage-content').classList.contains('active')) {
+                        loadCards();
+                    }
                 } else {
                     showMessage(result.message, 'error', 'globalMessage');
                 }
@@ -714,15 +737,19 @@
                         // Fill form with card data
                         document.getElementById('title').value = card.title;
                         document.getElementById('description').value = card.description;
-                        document.getElementById('category').value = card.category;
-                        document.getElementById('author').value = card.author;
-                        document.getElementById('status').value = card.status;
+                        document.getElementById('category').value = card.category || 'kegiatan';
+                        document.getElementById('author').value = card.author || 'Katanya Setara';
+                        document.getElementById('status').value = card.status || 'active';
 
                         if (card.image_url) {
                             document.getElementById('imagePreview').src = card.image_url;
                             document.getElementById('imagePreview').classList.remove('hidden');
                             document.getElementById('uploadText').style.display = 'none';
                         }
+
+                        // Update button text to indicate editing
+                        const submitButton = document.querySelector('#contentForm button[type="submit"]');
+                        submitButton.innerHTML = '<i class="fas fa-edit"></i> Update Konten';
 
                         currentEditId = id;
                         showTab('add-content');
