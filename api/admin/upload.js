@@ -1,6 +1,5 @@
-// API untuk upload gambar - Support Cloudinary dan ImageKit
+// API untuk upload gambar - Support Cloudinary dan Base64 fallback
 import { IncomingForm } from 'formidable';
-import { promises as fs } from 'fs';
 
 export const config = {
     api: {
@@ -22,56 +21,6 @@ function verifyToken(authHeader) {
     } catch {
         return false;
     }
-}
-
-// Upload ke Cloudinary (Free: 25 GB storage)
-async function uploadToCloudinary(fileBuffer, filename) {
-    const cloudinary = require('cloudinary').v2;
-
-    cloudinary.config({
-        cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-        api_key: process.env.CLOUDINARY_API_KEY,
-        api_secret: process.env.CLOUDINARY_API_SECRET,
-    });
-
-    return new Promise((resolve, reject) => {
-        cloudinary.uploader.upload_stream(
-            {
-                folder: 'katanya-setara',
-                public_id: `activity-${Date.now()}`,
-                transformation: [
-                    { width: 800, height: 600, crop: 'fill' },
-                    { quality: 'auto' }
-                ]
-            },
-            (error, result) => {
-                if (error) reject(error);
-                else resolve(result);
-            }
-        ).end(fileBuffer);
-    });
-}
-
-// Upload ke ImageKit (Free: 20 GB bandwidth/month)
-async function uploadToImageKit(fileBuffer, filename) {
-    const ImageKit = require('imagekit');
-
-    const imagekit = new ImageKit({
-        publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
-        privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
-        urlEndpoint: process.env.IMAGEKIT_URL_ENDPOINT
-    });
-
-    return imagekit.upload({
-        file: fileBuffer,
-        fileName: `activity-${Date.now()}-${filename}`,
-        folder: '/katanya-setara/',
-        transformation: [{
-            width: 800,
-            height: 600,
-            crop: 'maintain_ratio'
-        }]
-    });
 }
 
 export default async function handler(req, res) {
@@ -113,7 +62,7 @@ export default async function handler(req, res) {
 
         // Handle file array atau single file
         const file = Array.isArray(files.image) ? files.image[0] : files.image;
-
+        
         if (!file) {
             return res.status(400).json({
                 success: false,
@@ -130,74 +79,56 @@ export default async function handler(req, res) {
             });
         }
 
-        // Read file buffer dari filepath atau newFilename
-        let fileBuffer;
-        const filePath = file.filepath || file.path;
-
-        if (filePath) {
-            fileBuffer = await fs.readFile(filePath);
-        } else {
-            return res.status(400).json({
-                success: false,
-                message: 'File path not found'
-            });
-        }
-
-        let uploadResult;
         const uploadService = process.env.UPLOAD_SERVICE || 'base64';
 
-        switch (uploadService) {
-            case 'cloudinary':
-                if (!process.env.CLOUDINARY_CLOUD_NAME) {
-                    throw new Error('Cloudinary not configured');
-                }
-                uploadResult = await uploadToCloudinary(fileBuffer, file.originalFilename);
+        if (uploadService === 'cloudinary' && process.env.CLOUDINARY_CLOUD_NAME) {
+            // Upload ke Cloudinary
+            const cloudinary = require('cloudinary').v2;
+            
+            cloudinary.config({
+                cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+                api_key: process.env.CLOUDINARY_API_KEY,
+                api_secret: process.env.CLOUDINARY_API_SECRET
+            });
 
-                return res.status(200).json({
-                    success: true,
-                    data: {
-                        image_url: uploadResult.secure_url,
-                        public_id: uploadResult.public_id,
-                        filename: file.originalFilename,
-                        size: file.size,
-                        service: 'cloudinary'
-                    },
-                    message: 'Image uploaded to Cloudinary successfully'
-                });
+            const result = await cloudinary.uploader.upload(file.filepath, {
+                folder: 'katanya-setara',
+                public_id: `activity-${Date.now()}`,
+                transformation: [
+                    { width: 800, height: 600, crop: 'limit' },
+                    { quality: 'auto' }
+                ]
+            });
 
-            case 'imagekit':
-                if (!process.env.IMAGEKIT_PUBLIC_KEY) {
-                    throw new Error('ImageKit not configured');
-                }
-                uploadResult = await uploadToImageKit(fileBuffer, file.originalFilename);
+            return res.status(200).json({
+                success: true,
+                data: {
+                    image_url: result.secure_url,
+                    public_id: result.public_id,
+                    filename: file.originalFilename,
+                    size: file.size,
+                    service: 'cloudinary'
+                },
+                message: 'Image uploaded to Cloudinary successfully'
+            });
 
-                return res.status(200).json({
-                    success: true,
-                    data: {
-                        image_url: uploadResult.url,
-                        fileId: uploadResult.fileId,
-                        filename: file.originalFilename,
-                        size: file.size,
-                        service: 'imagekit'
-                    },
-                    message: 'Image uploaded to ImageKit successfully'
-                });
+        } else {
+            // Fallback: Base64 encoding
+            const fs = require('fs');
+            const fileBuffer = fs.readFileSync(file.filepath);
+            const base64Image = fileBuffer.toString('base64');
+            const dataUrl = `data:${file.mimetype};base64,${base64Image}`;
 
-            default:
-                // Fallback: Base64 encoding (tidak direkomendasikan untuk production)
-                const base64Image = fileBuffer.toString('base64');
-                const dataUrl = `data:${file.mimetype};base64,${base64Image}`;
-
-                return res.status(200).json({
-                    success: true,
-                    data: {
-                        image_url: dataUrl,
-                        filename: file.originalFilename,
-                        size: file.size,
-                        service: 'base64'
-                    },
-                    message: 'Image encoded as Base64 (consider using external hosting for better performance)'
-                });
+            return res.status(200).json({
+                success: true,
+                data: {
+                    image_url: dataUrl,
+                    filename: file.originalFilename,
+                    size: file.size,
+                    service: 'base64'
+                },
+                message: 'Image encoded as Base64 (configure Cloudinary for better performance)'
+            });
         }
 
     } catch (error) {
@@ -208,29 +139,3 @@ export default async function handler(req, res) {
         });
     }
 }
-
-// Contoh fungsi untuk upload ke Cloudinary (uncomment jika menggunakan)
-/*
-import { v2 as cloudinary } from 'cloudinary';
-
-cloudinary.config({
-  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-  api_key: process.env.CLOUDINARY_API_KEY,
-  api_secret: process.env.CLOUDINARY_API_SECRET,
-});
-
-async function uploadToCloudinary(file) {
-  return new Promise((resolve, reject) => {
-    cloudinary.uploader.upload(file.filepath, {
-      folder: 'katanya-setara',
-      transformation: [
-        { width: 800, height: 600, crop: 'fill' },
-        { quality: 'auto' }
-      ]
-    }, (error, result) => {
-      if (error) reject(error);
-      else resolve(result);
-    });
-  });
-}
-*/

@@ -15,11 +15,55 @@ export default async function handler(req, res) {
         return res.status(405).json({ error: 'Method not allowed' });
     }
 
+    // Check if DATABASE_URL is configured
+    if (!process.env.DATABASE_URL) {
+        console.log('DATABASE_URL not configured, using sample data');
+        
+        // Return sample data
+        const sampleActivities = [
+            {
+                id: 1,
+                title: "Workshop Kesetaraan Gender",
+                description: "Workshop edukatif tentang pentingnya kesetaraan gender di lingkungan kampus dan masyarakat.",
+                image_url: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=250&fit=crop",
+                date: "2025-01-15",
+                status: "published",
+                created_at: "2025-01-10T10:00:00Z"
+            },
+            {
+                id: 2,
+                title: "Diskusi Terbuka: Bias Gender di Media",
+                description: "Ruang diskusi terbuka untuk membahas representasi gender dalam media massa dan dampaknya terhadap masyarakat.",
+                image_url: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=250&fit=crop",
+                date: "2025-01-20",
+                status: "published",
+                created_at: "2025-01-12T14:30:00Z"
+            },
+            {
+                id: 3,
+                title: "Kampanye #SetaraItuBukan Mitos",
+                description: "Kampanye edukasi melalui konten kreatif di berbagai platform media sosial untuk mendobrak mitos tentang kesetaraan gender.",
+                image_url: "https://images.unsplash.com/photo-1559027006-448665bd7c7f?w=400&h=250&fit=crop",
+                date: "2025-01-25",
+                status: "published",
+                created_at: "2025-01-15T09:15:00Z"
+            }
+        ];
+
+        return res.status(200).json({
+            success: true,
+            data: sampleActivities,
+            total: sampleActivities.length,
+            message: 'Activities retrieved successfully (sample data)',
+            note: 'Configure DATABASE_URL in Vercel environment variables to use Supabase database'
+        });
+    }
+
     try {
-        // Koneksi ke database
+        // Koneksi ke Supabase database
         const client = new Client({
             connectionString: process.env.DATABASE_URL,
-            ssl: process.env.NODE_ENV === 'production' ? { rejectUnauthorized: false } : false
+            ssl: { rejectUnauthorized: false }
         });
 
         await client.connect();
@@ -57,15 +101,45 @@ export default async function handler(req, res) {
             success: true,
             data: activities,
             total: activities.length,
-            message: 'Activities retrieved successfully'
+            message: 'Activities retrieved successfully from Supabase',
+            source: 'database'
         });
 
     } catch (error) {
         console.error('Database error:', error);
-        res.status(500).json({
-            success: false,
-            message: 'Failed to retrieve activities',
-            error: process.env.NODE_ENV === 'development' ? error.message : 'Database error'
+        
+        // Return sample data as fallback
+        const sampleActivities = [
+            {
+                id: 1,
+                title: "Workshop Kesetaraan Gender",
+                description: "Workshop edukatif tentang pentingnya kesetaraan gender di lingkungan kampus dan masyarakat.",
+                image_url: "https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=250&fit=crop",
+                date: "2025-01-15"
+            },
+            {
+                id: 2,
+                title: "Diskusi Terbuka: Bias Gender di Media", 
+                description: "Ruang diskusi terbuka untuk membahas representasi gender dalam media massa.",
+                image_url: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=250&fit=crop",
+                date: "2025-01-20"
+            },
+            {
+                id: 3,
+                title: "Kampanye #SetaraItuBukan Mitos",
+                description: "Kampanye edukasi melalui konten kreatif di berbagai platform media sosial.",
+                image_url: "https://images.unsplash.com/photo-1559027006-448665bd7c7f?w=400&h=250&fit=crop", 
+                date: "2025-01-25"
+            }
+        ];
+
+        res.status(200).json({
+            success: true,
+            data: sampleActivities,
+            total: sampleActivities.length,
+            message: 'Database connection failed, using fallback data',
+            error: error.message,
+            note: 'Please check DATABASE_URL configuration in Vercel environment variables'
         });
     }
 }
