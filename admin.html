@@ -632,24 +632,6 @@
                 showMessage('Error: ' + error.message, 'error', 'globalMessage');
             }
         });
-                    resetImagePreview();
-                    currentEditId = null;
-                    
-                    // Update button text back to "Tambah"
-                    const submitButton = e.target.querySelector('button[type="submit"]');
-                    submitButton.innerHTML = '<i class="fas fa-plus"></i> Tambah Konten';
-                    
-                    // Reload cards if in manage tab
-                    if (document.getElementById('manage-content').classList.contains('active')) {
-                        loadCards();
-                    }
-                } else {
-                    showMessage(result.message, 'error', 'globalMessage');
-                }
-            } catch (error) {
-                showMessage('Error: ' + error.message, 'error', 'globalMessage');
-            }
-        });
 
         // Functions
         function showDashboard() {
@@ -715,7 +697,16 @@
                 return;
             }
 
-            cardsList.innerHTML = cards.map(card => `
+            cardsList.innerHTML = cards.map(card => {
+                // Konversi status ke bahasa Indonesia
+                let statusText = card.status;
+                if (card.status === 'published') statusText = 'Dipublikasikan';
+                else if (card.status === 'unpublished') statusText = 'Tidak Dipublikasikan';
+                else if (card.status === 'active') statusText = 'Dipublikasikan'; // Legacy support
+                else if (card.status === 'inactive') statusText = 'Tidak Dipublikasikan'; // Legacy support
+                else if (card.status === 'draft') statusText = 'Draft';
+
+                return `
                 <div class="card-item">
                     <img src="${card.image_url || '/assets/logo.svg'}" 
                          alt="${card.title}" class="card-image"
@@ -724,7 +715,7 @@
                         <h4>${card.title}</h4>
                         <p>${card.description.substring(0, 100)}${card.description.length > 100 ? '...' : ''}</p>
                         <div class="card-meta">
-                            <span class="status-badge status-${card.status}">${card.status}</span>
+                            <span class="status-badge status-${card.status}">${statusText}</span>
                             <span>${card.category}</span> • 
                             <span>${card.author}</span> • 
                             <span>${new Date(card.created_at).toLocaleDateString('id-ID')}</span>
@@ -739,7 +730,8 @@
                         </button>
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
         }
 
         async function editCard(id) {
