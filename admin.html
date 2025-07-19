@@ -616,24 +616,6 @@
                 showMessage('Error: ' + error.message, 'error', 'globalMessage');
             }
         });
-                    resetImagePreview();
-                    currentEditId = null;
-                    
-                    // Update button text back to "Tambah"
-                    const submitButton = e.target.querySelector('button[type="submit"]');
-                    submitButton.innerHTML = '<i class="fas fa-plus"></i> Tambah Konten';
-                    
-                    // Reload cards if in manage tab
-                    if (document.getElementById('manage-content').classList.contains('active')) {
-                        loadCards();
-                    }
-                } else {
-                    showMessage(result.message, 'error', 'globalMessage');
-                }
-            } catch (error) {
-                showMessage('Error: ' + error.message, 'error', 'globalMessage');
-            }
-        });
 
         // Functions
         function showDashboard() {
