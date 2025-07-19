@@ -1,32 +1,102 @@
-# Katanya Setara Website
+# Katanya Setara - Website Profile
 
-Website profile untuk organisasi "Katanya Setara" - kampanye edukatif kesetaraan gender oleh pemuda.
+Website profile untuk organisasi Katanya Setara yang fokus pada kampanye edukatif kesetaraan gender.
 
-## Fitur Website
+## 🚀 Fitur
 
-✅ **Desain Modern & Responsif**
-- Font Poppins dari Google Fonts
-- Warna tema pink (#d94f70, #c13f5f) dan putih/cream (#fffafc, #f8f4f6)
-- Gradient background dan efek modern
+- **Landing Page Responsif** dengan informasi organisasi
+- **Galeri Kegiatan Dinamis** yang terhubung dengan database
+- **Admin Panel** untuk manajemen konten real-time
+- **Upload & Manajemen Gambar** dengan Cloudinary integration
+- **Database Integration** dengan Supabase PostgreSQL
 
-✅ **Struktur Lengkap**
-- Header/Navbar dengan logo dan navigasi
-- Hero section dengan logo dan tagline
-- About section dengan deskripsi organisasi
-- Statistics section dengan animasi counter
-- Team section dengan profil anggota
-- Activities gallery dengan foto kegiatan
-- Volunteer section (call-to-action)
-- Contact section dengan media sosial
-- Footer
+## 📁 Struktur Project
 
-✅ **Fitur Interaktif**
-- Smooth scrolling navigation
-- Hover effects pada semua elemen
-- Animasi fade-in saat scroll
-- Counter animation untuk statistik
-- Mobile responsive design
-- Lazy loading untuk gambar
+```
+katanyasetara/
+├── api/                    # Vercel Serverless Functions
+│   ├── activities.js       # Public API - List activities
+│   └── admin/
+│       ├── activities.js   # Admin CRUD API
+│       ├── login.js        # Authentication
+│       └── upload.js       # File upload handler
+├── assets/                 # Static images & files
+├── admin.html             # Admin panel interface
+├── index.html             # Main website
+├── script.js              # Frontend JavaScript
+├── styles.css             # Main stylesheet
+├── database-schema.sql    # Database schema
+├── package.json           # Dependencies
+└── vercel.json            # Vercel configuration
+```
+
+## 🛠️ Setup Development
+
+### 1. Install Dependencies
+```bash
+npm install
+```
+
+### 2. Setup Environment Variables
+Create `.env.local`:
+```env
+DATABASE_URL=postgresql://postgres.project:password@aws-0-region.pooler.supabase.com:5432/postgres
+CLOUDINARY_CLOUD_NAME=your_cloud_name
+CLOUDINARY_API_KEY=your_api_key
+CLOUDINARY_API_SECRET=your_api_secret
+```
+
+### 3. Setup Database (Supabase)
+```sql
+-- Run in Supabase SQL Editor:
+CREATE TABLE activities (
+    id SERIAL PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    description TEXT,
+    image_url TEXT,
+    category VARCHAR(100) DEFAULT 'kegiatan',
+    author VARCHAR(100) DEFAULT 'Katanya Setara',
+    status VARCHAR(20) DEFAULT 'published',
+    date DATE,
+    created_at TIMESTAMP DEFAULT NOW(),
+    updated_at TIMESTAMP DEFAULT NOW()
+);
+```
+
+### 4. Deploy ke Vercel
+```bash
+npx vercel
+```
+
+## 🔧 Tech Stack
+
+- **Frontend**: HTML5, CSS3, Vanilla JavaScript
+- **Backend**: Vercel Serverless Functions (Node.js)
+- **Database**: Supabase PostgreSQL with Connection Pooling
+- **File Storage**: Cloudinary (with Base64 fallback)
+- **Hosting**: Vercel
+- **Authentication**: Token-based admin authentication
+
+## 📱 Usage
+
+### Public Website
+- **URL**: https://katanyasetara.vercel.app
+- **Features**: View activities, team info, volunteer registration
+
+### Admin Panel  
+- **URL**: https://katanyasetara.vercel.app/admin.html
+- **Login**: Use admin credentials
+- **Features**: Add/Edit/Delete activities, Upload images
+
+## 🎯 API Endpoints
+
+- `GET /api/activities` - List published activities
+- `GET /api/admin/activities` - List all activities (admin)
+- `POST /api/admin/activities` - Create new activity (admin)
+- `PUT /api/admin/activities?id=1` - Update activity (admin)
+- `DELETE /api/admin/activities?id=1` - Delete activity (admin)
+- `POST /api/admin/upload` - Upload files (admin)
+- `POST /api/admin/login` - Admin authentication
 
 ## Struktur File
 
