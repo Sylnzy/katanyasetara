@@ -18,7 +18,7 @@ export default async function handler(req, res) {
     // Check if DATABASE_URL is configured
     if (!process.env.DATABASE_URL) {
         console.log('DATABASE_URL not configured, using sample data');
-        
+
         // Return sample data
         const sampleActivities = [
             {
@@ -62,12 +62,12 @@ export default async function handler(req, res) {
     try {
         // Koneksi ke Supabase database dengan proper error handling
         let connectionString = process.env.DATABASE_URL;
-        
+
         // Ensure password is URL encoded if it contains special characters
         if (connectionString && connectionString.includes('#')) {
             connectionString = connectionString.replace(/#/g, '%23');
         }
-        
+
         const client = new Client({
             connectionString: connectionString,
             ssl: { rejectUnauthorized: false }
@@ -89,7 +89,7 @@ export default async function handler(req, res) {
                 created_at,
                 updated_at
             FROM activities 
-            WHERE status = 'published' OR status = 'active'
+            WHERE status IN ('published', 'active')
             ORDER BY 
                 CASE WHEN date IS NOT NULL THEN date ELSE created_at END DESC
             LIMIT 20
@@ -122,7 +122,7 @@ export default async function handler(req, res) {
 
     } catch (error) {
         console.error('Database error:', error);
-        
+
         // Return sample data as fallback
         const sampleActivities = [
             {
@@ -134,7 +134,7 @@ export default async function handler(req, res) {
             },
             {
                 id: 2,
-                title: "Diskusi Terbuka: Bias Gender di Media", 
+                title: "Diskusi Terbuka: Bias Gender di Media",
                 description: "Ruang diskusi terbuka untuk membahas representasi gender dalam media massa.",
                 image_url: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=400&h=250&fit=crop",
                 date: "2025-01-20"
@@ -143,7 +143,7 @@ export default async function handler(req, res) {
                 id: 3,
                 title: "Kampanye #SetaraItuBukan Mitos",
                 description: "Kampanye edukasi melalui konten kreatif di berbagai platform media sosial.",
-                image_url: "https://images.unsplash.com/photo-1559027006-448665bd7c7f?w=400&h=250&fit=crop", 
+                image_url: "https://images.unsplash.com/photo-1559027006-448665bd7c7f?w=400&h=250&fit=crop",
                 date: "2025-01-25"
             }
         ];

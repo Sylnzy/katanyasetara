@@ -203,11 +203,11 @@ async function loadActivities() {
 
     } catch (error) {
         console.error('Error loading activities:', error);
-        
+
         // Hide loading and show error state
         loadingEl.style.display = 'none';
         errorEl.style.display = 'block';
-        
+
         // Fallback: show default activities if API fails
         displayDefaultActivities();
         gridEl.style.display = 'grid';
@@ -217,7 +217,7 @@ async function loadActivities() {
 // Display activities in the grid
 function displayActivities(activities) {
     const gridEl = document.getElementById('activities-grid');
-    
+
     gridEl.innerHTML = activities.map(activity => `
         <div class="gallery-item">
             <img src="${activity.image_url || 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=400&h=250&fit=crop'}" 
@@ -230,8 +230,8 @@ function displayActivities(activities) {
                 <div class="activity-meta">
                     ${activity.category ? `<span class="activity-category"><i class="fas fa-tag"></i> ${escapeHtml(activity.category)}</span>` : ''}
                     ${activity.author ? `<span class="activity-author"><i class="fas fa-user"></i> ${escapeHtml(activity.author)}</span>` : ''}
-                    ${activity.date ? `<span class="activity-date"><i class="fas fa-calendar-alt"></i> ${formatDate(activity.date)}</span>` : 
-                      activity.created_at ? `<span class="activity-date"><i class="fas fa-calendar-alt"></i> ${formatDate(activity.created_at)}</span>` : ''}
+                    ${activity.date ? `<span class="activity-date"><i class="fas fa-calendar-alt"></i> ${formatDate(activity.date)}</span>` :
+            activity.created_at ? `<span class="activity-date"><i class="fas fa-calendar-alt"></i> ${formatDate(activity.created_at)}</span>` : ''}
                 </div>
             </div>
         </div>
@@ -244,7 +244,7 @@ function displayActivities(activities) {
 // Display default activities if API fails
 function displayDefaultActivities() {
     const gridEl = document.getElementById('activities-grid');
-    
+
     const defaultActivities = [
         {
             title: "Workshop Kesetaraan Gender",

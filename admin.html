@@ -315,6 +315,12 @@
             color: #155724;
         }
 
+        .status-unpublished {
+            background: #f8d7da;
+            color: #721c24;
+        }
+
+        /* Legacy support untuk data lama */
         .status-active {
             background: #d4edda;
             color: #155724;
@@ -464,8 +470,7 @@
                         <label for="status">Status Publikasi</label>
                         <select id="status" name="status">
                             <option value="published">Dipublikasikan</option>
-                            <option value="draft">Draft</option>
-                            <option value="inactive">Tidak Aktif</option>
+                            <option value="unpublished">Tidak Dipublikasikan</option>
                         </select>
                     </div>
                 </div>
@@ -611,11 +616,11 @@
                     e.target.reset();
                     resetImagePreview();
                     currentEditId = null;
-                    
+
                     // Update button text back to "Tambah"
                     const submitButton = e.target.querySelector('button[type="submit"]');
                     submitButton.innerHTML = '<i class="fas fa-plus"></i> Tambah Konten';
-                    
+
                     // Reload cards if in manage tab
                     if (document.getElementById('manage-content').classList.contains('active')) {
                         loadCards();

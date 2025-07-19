@@ -62,7 +62,7 @@ export default async function handler(req, res) {
 
         // Handle file array atau single file
         const file = Array.isArray(files.image) ? files.image[0] : files.image;
-        
+
         if (!file) {
             return res.status(400).json({
                 success: false,
@@ -84,7 +84,7 @@ export default async function handler(req, res) {
         if (uploadService === 'cloudinary' && process.env.CLOUDINARY_CLOUD_NAME) {
             // Upload ke Cloudinary
             const cloudinary = require('cloudinary').v2;
-            
+
             cloudinary.config({
                 cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
                 api_key: process.env.CLOUDINARY_API_KEY,
