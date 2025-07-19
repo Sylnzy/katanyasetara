@@ -72,7 +72,7 @@ export default async function handler(req, res) {
 
             case 'POST':
                 // Tambah kegiatan baru
-                const { title, description, image_url, category, author } = req.body;
+                const { title, description, image_url, category, author, status } = req.body;
 
                 if (!title || !description) {
                     return res.status(400).json({
@@ -84,9 +84,9 @@ export default async function handler(req, res) {
                 const insertResult = await client.query(`
           INSERT INTO activities 
           (title, description, image_url, category, author, status, created_at, updated_at) 
-          VALUES ($1, $2, $3, $4, $5, 'active', NOW(), NOW()) 
+          VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW()) 
           RETURNING *
-        `, [title, description, image_url || '', category || 'kegiatan', author || 'Admin']);
+        `, [title, description, image_url || '', category || 'kegiatan', author || 'Admin', status || 'published']);
 
                 res.status(201).json({
                     success: true,

@@ -310,9 +310,19 @@
             font-weight: 500;
         }
 
+        .status-published {
+            background: #d4edda;
+            color: #155724;
+        }
+
         .status-active {
             background: #d4edda;
             color: #155724;
+        }
+
+        .status-draft {
+            background: #fff3cd;
+            color: #856404;
         }
 
         .status-inactive {
@@ -451,9 +461,10 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="status">Status</label>
+                        <label for="status">Status Publikasi</label>
                         <select id="status" name="status">
-                            <option value="active">Aktif</option>
+                            <option value="published">Dipublikasikan</option>
+                            <option value="draft">Draft</option>
                             <option value="inactive">Tidak Aktif</option>
                         </select>
                     </div>
@@ -721,7 +732,7 @@
                         document.getElementById('description').value = card.description;
                         document.getElementById('category').value = card.category || 'kegiatan';
                         document.getElementById('author').value = card.author || 'Katanya Setara';
-                        document.getElementById('status').value = card.status || 'active';
+                        document.getElementById('status').value = card.status || 'published';
 
                         if (card.image_url) {
                             document.getElementById('imagePreview').src = card.image_url;
