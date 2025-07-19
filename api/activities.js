@@ -60,9 +60,16 @@ export default async function handler(req, res) {
     }
 
     try {
-        // Koneksi ke Supabase database
+        // Koneksi ke Supabase database dengan proper error handling
+        let connectionString = process.env.DATABASE_URL;
+        
+        // Ensure password is URL encoded if it contains special characters
+        if (connectionString && connectionString.includes('#')) {
+            connectionString = connectionString.replace(/#/g, '%23');
+        }
+        
         const client = new Client({
-            connectionString: process.env.DATABASE_URL,
+            connectionString: connectionString,
             ssl: { rejectUnauthorized: false }
         });
 

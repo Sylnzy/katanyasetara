@@ -6,9 +6,12 @@ const { Client } = require('pg');
 async function testConnection() {
     console.log('🔍 Testing Supabase connection...');
     
-    // Ganti dengan connection string dari Supabase
+    // Connection string dengan password baru (tanpa karakter khusus)
     const connectionString = process.env.DATABASE_URL || 
-        'postgresql://postgres:Sylnzy#123a@db.vhoevbmydcfnxdhbtxtm.supabase.co:5432/postgres';
+        'postgresql://postgres:Sylnz123a10@db.vhoevbmydcfnxdhbtxtm.supabase.co:5432/postgres';
+    
+    console.log('🔗 Using connection string (password masked):', 
+        connectionString.replace(/:([^@]+)@/, ':****@'));
     
     if (connectionString.includes('[YOUR-PASSWORD]')) {
         console.log('❌ Please update CONNECTION_STRING with your actual Supabase credentials');
