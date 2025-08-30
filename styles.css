@@ -446,6 +446,79 @@ main {
   font-size: 1.1rem;
   transition: all 0.3s ease;
   box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+  border: none;
+  cursor: pointer;
+}
+
+.btn:hover {
+  background: #f8f9fa;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+}
+
+/* WhatsApp Community Section */
+.whatsapp-community-section {
+  margin: 60px 0;
+}
+
+.community-container {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.community-content {
+  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  padding: 50px 40px;
+  border-radius: 20px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+  border: 2px solid #e9ecef;
+  transition: all 0.3s ease;
+}
+
+.community-content:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+  border-color: #25D366;
+}
+
+.community-content h2 {
+  font-size: 2.2rem;
+  color: #333;
+  margin-bottom: 20px;
+  font-weight: 700;
+}
+
+.community-content p {
+  color: #555;
+  font-size: 1.1rem;
+  line-height: 1.7;
+}
+
+.whatsapp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 32px;
+  background: #25D366;
+  color: white;
+  text-decoration: none;
+  border-radius: 50px;
+  font-weight: 600;
+  font-size: 1.1rem;
+  transition: all 0.3s ease;
+  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+}
+
+.whatsapp-btn:hover {
+  background: #128C7E;
+  transform: translateY(-3px);
+  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+  color: white;
+}
+
+.whatsapp-btn i {
+  font-size: 1.3rem;
 }
 
 .btn:hover {
@@ -578,7 +651,7 @@ main {
   .hero h1 { font-size: 2.5rem; }
   .hero p { font-size: 1rem; }
   .section-title { font-size: 2rem; }
-  .about-content, .volunteer-section, .connect, .stats { padding: 30px 20px; }
+  .about-content, .volunteer-section, .connect, .stats, .community-content { padding: 30px 20px; }
   
   /* Hide desktop nav and show hamburger */
   .navbar nav { display: none; }
