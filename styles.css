@@ -479,7 +479,7 @@ main {
 .community-content:hover {
   transform: translateY(-5px);
   box-shadow: 0 15px 40px rgba(0,0,0,0.15);
-  border-color: #25D366;
+  border-color: #d94f70;
 }
 
 .community-content h2 {
@@ -500,20 +500,20 @@ main {
   align-items: center;
   gap: 12px;
   padding: 16px 32px;
-  background: #25D366;
+  background: #d94f70;
   color: white;
   text-decoration: none;
   border-radius: 50px;
   font-weight: 600;
   font-size: 1.1rem;
   transition: all 0.3s ease;
-  box-shadow: 0 5px 15px rgba(37, 211, 102, 0.3);
+  box-shadow: 0 5px 15px rgba(217, 79, 112, 0.3);
 }
 
 .whatsapp-btn:hover {
-  background: #128C7E;
+  background: #c13f5f;
   transform: translateY(-3px);
-  box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+  box-shadow: 0 8px 25px rgba(217, 79, 112, 0.4);
   color: white;
 }
 
